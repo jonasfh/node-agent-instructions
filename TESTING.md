@@ -26,3 +26,20 @@
 
 - **Zero Lint Policy**: Enforce zero warnings and zero errors from linters (e.g., ESLint).
 - **Automated Verification**: Run tests and linters in pre-commit checks and CI pipelines.
+
+## End-to-End & Visual Regression Testing (Playwright)
+
+- **Fast Local Feedback (< 5–10s)**:
+  - Run visual and UI tests locally **only** when actively developing or modifying UI, styling (CSS), templates, or frontend logic. Never run visual suites for purely backend, API, or database changes.
+  - Restrict local checks to headless Chromium and focused, essential viewport sizes (e.g., desktop 1280px and mobile 375px).
+- **Pre-cached Browser Binaries**:
+  - Pre-install and cache browser binaries and OS dependencies inside dev containers or build environments to avoid runtime download latency, network dependency, or flaky installations.
+- **Focused Locator Snapshots & Tolerances**:
+  - Prefer capturing specific component containers or modals (`expect(locator).toHaveScreenshot()`) over full-page screenshots to reduce fragility from unrelated page elements or dynamic timestamps.
+  - Configure reasonable visual tolerance (e.g., `maxDiffPixelRatio: 0.02` or threshold) to accommodate minor subpixel antialiasing differences across operating systems.
+  - Maintain a clear workflow to review and commit golden reference updates (`--update-snapshots`) when design changes are deliberate.
+- **Isolated Component Fixtures**:
+  - Prefer loading isolated, lightweight HTML/CSS/JS fixtures when testing UI component layout, eliminating dependencies on backend database provisioning or full application server initialization.
+- **Comprehensive CI Verification**:
+  - Delegate broader visual test matrixes (multiple browsers, extended screen sizes, interactive animations) to CI pipelines (e.g., GitHub Actions). Ensure failure artifacts (diff screenshots) are uploaded as workflow artifacts for immediate inspection.
+
